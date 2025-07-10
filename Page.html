@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Developer Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/simpledotcss@2.2.1/simple.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.2/dist/quill.snow.css"
+    />
+    <style id="app-style">
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #fff;
+        color: #000;
+        overflow-x: hidden;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 220px;
+        background-color: #fff;
+        border-right: 1px solid #eee;
+        padding: 40px 0;
+        display: flex;
+        flex-direction: column;
+        z-index: 100;
+      }
+
+      .sidebar-logo {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .nav-link {
+        padding: 12px 30px;
+        color: #333;
+        text-decoration: none;
+        font-size: 16px;
+        transition: all 0.3s;
+        display: block;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+        background-color: #f5f5f5;
+        color: #000;
+      }
+
+      .content {
+        margin-left: 220px;
+      }
+
+      section {
+        min-height: 100vh;
+        padding: 60px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      h2 {
+        font-size: 36px;
+        margin-bottom: 40px;
+        font-weight: 700;
+      }
+
+      /* About Me Section */
+      .profile-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 40px;
+      }
+
+      .profile-upload {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background-color: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        overflow: hidden;
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .profile-upload img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .profile-upload:hover::after {
+        content: "Change Photo";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 8px;
+        text-align: center;
+        font-size: 14px;
+      }
+
+      .bio {
+        max-width: 700px;
+        text-align: center;
+        margin: 0 auto 40px;
+        line-height: 1.8;
+      }
+
+      .skills {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .skill-badge {
+        padding: 8px 16px;
+        background-color: #f0f0f0;
+        border-radius: 90px;
+        font-size: 12px;
+      }
+
+      /* Projects Section */
+      .projects-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+      .category-filter {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        min-width: 200px;
+      }
+
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .project-card {
+        border: 1px solid #eee;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .project-thumb {
+        height: 180px;
+        background-color: #f0f0f0;
+        overflow: hidden;
+      }
+
+      .project-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .project-info {
+        padding: 20px;
+      }
+
+      .project-title {
+        font-size: 20px;
+        margin: 0 0 10px;
+      }
+
+      .project-desc {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 20px;
+      }
+
+      .project-link {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #000;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+      }
+
+      .project-link:hover {
+        background-color: #333;
+      }
+
+      /* Blog Section */
+      .blog-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+      .new-post-btn {
+        padding: 10px 20px;
+        background-color: #000;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+      }
+
+      .new-post-btn:hover {
+        background-color: #333;
+      }
+
+      .blog-list {
+        max-width: 800px;
+      }
+
+      .blog-post {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 30px;
+        margin-bottom: 30px;
+      }
+
+      .blog-title {
+        font-size: 24px;
+        margin: 0 0 10px;
+      }
+
+      .blog-summary {
+        color: #555;
+        margin-bottom: 20px;
+      }
+
+      .read-more {
+        color: #000;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+        margin-top: 10px;
+      }
+
+      .draft-label {
+        display: inline-block;
+        background-color: #f0f0f0;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        margin-left: 10px;
+        color: #555;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-content {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 30px;
+        width: 800px;
+        max-width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .modal-title {
+        font-size: 24px;
+        margin: 0;
+      }
+
+      .close-modal {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .modal-body {
+        margin-bottom: 30px;
+      }
+
+      .post-title-input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        font-size: 18px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .editor {
+        height: 300px;
+        margin-bottom: 20px;
+      }
+
+      .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .btn-draft {
+        background-color: #f0f0f0;
+        color: #333;
+      }
+
+      .btn-publish {
+        background-color: #000;
+        color: #fff;
+      }
+
+      /* Testimonials Section */
+      .testimonials-container {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      .carousel {
+        overflow: hidden;
+        position: relative;
+        height: 300px;
+      }
+
+      .carousel-item {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.5s;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .carousel-item.active {
+        opacity: 1;
+      }
+
+      .testimonial-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        background-color: #f0f0f0;
+        overflow: hidden;
+      }
+
+      .testimonial-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .testimonial-text {
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+
+      .testimonial-author {
+        font-weight: 600;
+      }
+
+      .carousel-controls {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        gap: 20px;
+      }
+
+      .carousel-btn {
+        background: none;
+        border: 1px solid #ddd;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .carousel-btn:hover {
+        background-color: #f0f0f0;
+      }
+
+      /* Contact Section */
+      .contact-form {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #000;
+      }
+
+      textarea.form-control {
+        min-height: 150px;
+      }
+
+      .submit-btn {
+        padding: 12px 30px;
+        background-color: #000;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+      }
+
+      .submit-btn:hover {
+        background-color: #333;
+      }
+
+      .submit-btn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      .form-error {
+        color: #e74c3c;
+        font-size: 14px;
+        margin-top: 5px;
+      }
+
+      .form-success {
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        text-align: center;
+        display: none;
+      }
+
+      .spinner {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+        margin-left: 10px;
+        vertical-align: middle;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <h1>Portfolio</h1>
+      </div>
+      <nav>
+        <a href="#about" class="nav-link active">About Me</a>
+        <a href="#projects" class="nav-link">Proyectos</a>
+        <a href="#blog" class="nav-link">Blog</a>
+        <a href="#testimonials" class="nav-link">Testimonios</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+    </div>
+
+    <div class="content">
+      <!-- About Me Section -->
+      <section id="about">
+        <h2>About Me</h2>
+        <div class="profile-container">
+          <div class="profile-upload" id="profileUpload">
+            <i class="fas fa-user-circle fa-5x" id="profilePlaceholder"></i>
+            <img id="profileImg" style="display: none" alt="Profile Photo" />
+            <input
+              type="file"
+              id="profileInput"
+              accept="image/*"
+              style="display: none"
+            />
+          </div>
+          <h3>Your Name Here</h3>
+        </div>
+
+        <div class="bio">
+          <p>
+            I'm a passionate full-stack developer with 5+ years of experience
+            building modern web applications. I specialize in creating robust,
+            scalable solutions using cutting-edge technologies. My approach
+            combines technical expertise with creative problem-solving to
+            deliver exceptional user experiences.
+          </p>
+        </div>
+
+        <div class="skills">
+          <div class="skill-badge">JavaScript</div>
+          <div class="skill-badge">React</div>
+          <div class="skill-badge">Node.js</div>
+          <div class="skill-badge">TypeScript</div>
+          <div class="skill-badge">GraphQL</div>
+          <div class="skill-badge">MongoDB</div>
+          <div class="skill-badge">AWS</div>
+          <div class="skill-badge">Docker</div>
+          <div class="skill-badge">CI/CD</div>
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      <section id="projects">
+        <div class="projects-header">
+          <h2>Projects</h2>
+          <select class="category-filter" id="categoryFilter">
+            <option value="all">Todos los Proyectos</option>
+            <option value="web">Web Development</option>
+            <option value="mobile">Mobile Apps</option>
+            <option value="design">UI/UX Design</option>
+            <option value="backend">Backend Systems</option>
+          </select>
+        </div>
+
+        <div class="projects-grid">
+          <div class="project-card" data-category="web">
+            <div class="project-thumb">
+              <img
+                src="https://cdn.pixabay.com/photo/2016/11/23/14/45/coding-1853305_1280.jpg"
+                alt="E-commerce Platform"
+              />
+            </div>
+            <div class="project-info">
+              <h3 class="project-title">E-commerce Platform</h3>
+              <p class="project-desc">
+                A full-featured online store with product management, cart, and
+                payment integration.
+              </p>
+              <a href="javascript:void(0)" class="project-link">View Project</a>
+            </div>
+          </div>
+
+          <div class="project-card" data-category="mobile">
+            <div class="project-thumb">
+              <img
+                src="https://cdn.pixabay.com/photo/2017/12/12/12/44/mockup-3014294_1280.png"
+                alt="Fitness Tracker App"
+              />
+            </div>
+            <div class="project-info">
+              <h3 class="project-title">Fitness Tracker App</h3>
+              <p class="project-desc">
+                Mobile application for tracking workouts, nutrition, and fitness
+                goals.
+              </p>
+              <a href="javascript:void(0)" class="project-link">View Project</a>
+            </div>
+          </div>
+
+          <div class="project-card" data-category="design">
+            <div class="project-thumb">
+              <img
+                src="https://cdn.pixabay.com/photo/2017/10/01/00/52/architecture-2804083_1280.jpg"
+                alt="Banking Dashboard UI"
+              />
+            </div>
+            <div class="project-info">
+              <h3 class="project-title">Banking Dashboard UI</h3>
+              <p class="project-desc">
+                Modern user interface design for a digital banking platform.
+              </p>
+              <a href="javascript:void(0)" class="project-link">View Project</a>
+            </div>
+          </div>
+
+          <div class="project-card" data-category="backend">
+            <div class="project-thumb">
+              <img
+                src="https://cdn.pixabay.com/photo/2016/11/27/21/42/stock-1863880_1280.jpg"
+                alt="API Microservices"
+              />
+            </div>
+            <div class="project-info">
+              <h3 class="project-title">API Microservices</h3>
+              <p class="project-desc">
+                Scalable backend architecture using microservices and API
+                gateways.
+              </p>
+              <a href="javascript:void(0)" class="project-link">View Project</a>
+            </div>
+          </div>
+
+          <div class="project-card" data-category="web">
+            <div class="project-thumb">
+              <img
+                src="https://cdn.pixabay.com/photo/2018/05/18/15/30/web-design-3411373_1280.jpg"
+                alt="Portfolio Generator"
+              />
+            </div>
+            <div class="project-info">
+              <h3 class="project-title">Portfolio Generator</h3>
+              <p class="project-desc">
+                Web tool for creating custom developer portfolios with various
+                templates.
+              </p>
+              <a href="javascript:void(0)" class="project-link">View Project</a>
+            </div>
+          </div>
+
+          <div class="project-card" data-category="mobile">
+            <div class="project-thumb">
+              <img
+                src="https://cdn.pixabay.com/photo/2017/01/22/12/07/imac-1999636_1280.png"
+                alt="Travel Companion App"
+              />
+            </div>
+            <div class="project-info">
+              <h3 class="project-title">Travel Companion App</h3>
+              <p class="project-desc">
+                Location-based app for discovering local attractions and
+                planning trips.
+              </p>
+              <a href="javascript:void(0)" class="project-link">View Project</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Blog Section -->
+      <section id="blog">
+        <div class="blog-header">
+          <h2>Blog</h2>
+          <button class="new-post-btn" id="newPostBtn">New Post</button>
+        </div>
+
+        <div class="blog-list" id="blogList">
+          <!-- Blog posts will be dynamically added here -->
+        </div>
+      </section>
+
+      <!-- Testimonials Section -->
+      <section id="testimonials">
+        <h2>Testimonials</h2>
+
+        <div class="testimonials-container">
+          <div class="carousel" id="testimonialsCarousel">
+            <div class="carousel-item active">
+              <div class="testimonial-avatar">
+                <img
+                  src="https://cdn.pixabay.com/photo/2018/04/27/03/50/portrait-3353699_1280.jpg"
+                  alt="Sarah Johnson"
+                />
+              </div>
+              <p class="testimonial-text">
+                "Working with this developer was a game-changer for our startup.
+                They delivered our platform ahead of schedule and the code
+                quality was exceptional."
+              </p>
+              <p class="testimonial-author">Sarah Johnson, CEO at TechStart</p>
+            </div>
+
+            <div class="carousel-item">
+              <div class="testimonial-avatar">
+                <img
+                  src="https://cdn.pixabay.com/photo/2016/11/21/12/42/beard-1845166_1280.jpg"
+                  alt="Mark Williams"
+                />
+              </div>
+              <p class="testimonial-text">
+                "I've worked with many developers over my 15-year career, but
+                none have impressed me as much with their technical skills and
+                attention to detail."
+              </p>
+              <p class="testimonial-author">Mark Williams, CTO at DataFlow</p>
+            </div>
+
+            <div class="carousel-item">
+              <div class="testimonial-avatar">
+                <img
+                  src="https://cdn.pixabay.com/photo/2018/01/15/07/51/woman-3083377_1280.jpg"
+                  alt="Emily Chen"
+                />
+              </div>
+              <p class="testimonial-text">
+                "The e-commerce solution developed for us increased our
+                conversion rate by 45% and provided invaluable analytics that
+                transformed our business."
+              </p>
+              <p class="testimonial-author">
+                Emily Chen, Marketing Director at StyleCo
+              </p>
+            </div>
+          </div>
+
+          <div class="carousel-controls">
+            <button class="carousel-btn prev-btn" id="prevBtn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="carousel-btn next-btn" id="nextBtn">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact">
+        <h2>Contact Me</h2>
+
+        <div class="contact-form" id="contactForm">
+          <div class="form-group">
+            <label class="form-label" for="name">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Your name"
+            />
+            <div class="form-error" id="nameError"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="Your email address"
+            />
+            <div class="form-error" id="emailError"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="message">Message</label>
+            <textarea
+              class="form-control"
+              id="message"
+              placeholder="Your message"
+            ></textarea>
+            <div class="form-error" id="messageError"></div>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">
+            Send Message
+            <span class="spinner" id="submitSpinner"></span>
+          </button>
+        </div>
+
+        <div class="form-success" id="formSuccess">
+          <h3>Thank you for your message!</h3>
+          <p>I'll get back to you as soon as possible.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Blog Post Modal -->
+    <div class="modal" id="blogModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">New Blog Post</h3>
+          <button class="close-modal" id="closeModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <input
+            type="text"
+            class="post-title-input"
+            id="postTitle"
+            placeholder="Post Title"
+          />
+          <div id="editor" class="editor"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-draft" id="saveDraftBtn">Save Draft</button>
+          <button class="btn btn-publish" id="publishBtn">Publish</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.2/dist/quill.min.js"></script>
+    <script id="app-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        // Navigation active state
+        const navLinks = document.querySelectorAll(".nav-link");
+        const sections = document.querySelectorAll("section");
+
+        // Smooth scrolling
+        navLinks.forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute("href");
+            const targetSection = document.querySelector(targetId);
+
+            window.scrollTo({
+              top: targetSection.offsetTop,
+              behavior: "smooth",
+            });
+
+            // Update active nav link
+            navLinks.forEach((navLink) => navLink.classList.remove("active"));
+            this.classList.add("active");
+          });
+        });
+
+        // Update active nav on scroll
+        window.addEventListener("scroll", function () {
+          let current = "";
+
+          sections.forEach((section) => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 60) {
+              current = section.getAttribute("id");
+            }
+          });
+
+          navLinks.forEach((link) => {
+            link.classList.remove("active");
+            if (link.getAttribute("href") === `#${current}`) {
+              link.classList.add("active");
+            }
+          });
+        });
+
+        // Profile Picture Upload
+        const profileUpload = document.getElementById("profileUpload");
+        const profileInput = document.getElementById("profileInput");
+        const profileImg = document.getElementById("profileImg");
+        const profilePlaceholder =
+          document.getElementById("profilePlaceholder");
+
+        profileUpload.addEventListener("click", function () {
+          profileInput.click();
+        });
+
+        profileInput.addEventListener("change", function () {
+          if (this.files && this.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+              profileImg.src = e.target.result;
+              profileImg.style.display = "block";
+              profilePlaceholder.style.display = "none";
+            };
+
+            reader.readAsDataURL(this.files[0]);
+          }
+        });
+
+        // Project Category Filter
+        const categoryFilter = document.getElementById("categoryFilter");
+        const projectCards = document.querySelectorAll(".project-card");
+
+        categoryFilter.addEventListener("change", function () {
+          const category = this.value;
+
+          projectCards.forEach((card) => {
+            if (category === "all" || card.dataset.category === category) {
+              card.style.display = "block";
+            } else {
+              card.style.display = "none";
+            }
+          });
+        });
+
+        // Blog Functionality
+        const blogList = document.getElementById("blogList");
+        const newPostBtn = document.getElementById("newPostBtn");
+        const blogModal = document.getElementById("blogModal");
+        const closeModal = document.getElementById("closeModal");
+        const postTitle = document.getElementById("postTitle");
+        const saveDraftBtn = document.getElementById("saveDraftBtn");
+        const publishBtn = document.getElementById("publishBtn");
+
+        // Initialize Quill editor
+        const quill = new Quill("#editor", {
+          theme: "snow",
+          placeholder: "Write your blog post here...",
+          modules: {
+            toolbar: [
+              ["bold", "italic", "underline", "strike"],
+              ["blockquote", "code-block"],
+              [{ header: 1 }, { header: 2 }],
+              [{ list: "ordered" }, { list: "bullet" }],
+              [{ script: "sub" }, { script: "super" }],
+              [{ indent: "-1" }, { indent: "+1" }],
+              [{ size: ["small", false, "large", "huge"] }],
+              ["link", "image"],
+              [{ color: [] }, { background: [] }],
+              [{ align: [] }],
+              ["clean"],
+            ],
+          },
+        });
+
+        // Load posts from localStorage
+        function loadBlogPosts() {
+          const posts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+          blogList.innerHTML = "";
+
+          if (posts.length === 0) {
+            blogList.innerHTML =
+              '<p>No blog posts yet. Click "New Post" to create one.</p>';
+            return;
+          }
+
+          posts.forEach((post) => {
+            const postEl = document.createElement("div");
+            postEl.classList.add("blog-post");
+
+            let titleHtml = `<h3 class="blog-title">${post.title}`;
+            if (post.isDraft) {
+              titleHtml += `<span class="draft-label">Draft</span>`;
+            }
+            titleHtml += `</h3>`;
+
+            postEl.innerHTML = `
+            ${titleHtml}
+            <div class="blog-summary">${post.content.substring(0, 150)}...</div>
+            <a href="javascript:void(0)" class="read-more">Read More</a>
+          `;
+
+            blogList.appendChild(postEl);
+          });
+        }
+
+        // Show blog modal
+        newPostBtn.addEventListener("click", function () {
+          postTitle.value = "";
+          quill.root.innerHTML = "";
+          blogModal.style.display = "flex";
+        });
+
+        // Close blog modal
+        closeModal.addEventListener("click", function () {
+          blogModal.style.display = "none";
+        });
+
+        window.addEventListener("click", function (e) {
+          if (e.target === blogModal) {
+            blogModal.style.display = "none";
+          }
+        });
+
+        // Save draft
+        saveDraftBtn.addEventListener("click", function () {
+          const title = postTitle.value;
+          const content = quill.root.innerHTML;
+
+          if (!title) {
+            alert("Please enter a title for your post");
+            return;
+          }
+
+          const posts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+          posts.push({
+            id: Date.now(),
+            title,
+            content,
+            isDraft: true,
+            createdAt: new Date().toISOString(),
+          });
+
+          localStorage.setItem("blogPosts", JSON.stringify(posts));
+          blogModal.style.display = "none";
+          loadBlogPosts();
+        });
+
+        // Publish post
+        publishBtn.addEventListener("click", function () {
+          const title = postTitle.value;
+          const content = quill.root.innerHTML;
+
+          if (!title) {
+            alert("Please enter a title for your post");
+            return;
+          }
+
+          if (!content || quill.getText().trim().length < 10) {
+            alert("Please add more content to your post");
+            return;
+          }
+
+          const posts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+          posts.push({
+            id: Date.now(),
+            title,
+            content,
+            isDraft: false,
+            createdAt: new Date().toISOString(),
+          });
+
+          localStorage.setItem("blogPosts", JSON.stringify(posts));
+          blogModal.style.display = "none";
+          loadBlogPosts();
+        });
+
+        // Load initial blog posts
+        loadBlogPosts();
+
+        // Testimonials Carousel
+        const carousel = document.getElementById("testimonialsCarousel");
+        const carouselItems = carousel.querySelectorAll(".carousel-item");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        let currentSlide = 0;
+        let slideInterval;
+
+        function showSlide(index) {
+          carouselItems.forEach((item) => item.classList.remove("active"));
+
+          if (index < 0) {
+            currentSlide = carouselItems.length - 1;
+          } else if (index >= carouselItems.length) {
+            currentSlide = 0;
+          } else {
+            currentSlide = index;
+          }
+
+          carouselItems[currentSlide].classList.add("active");
+        }
+
+        function startSlideshow() {
+          slideInterval = setInterval(() => {
+            showSlide(currentSlide + 1);
+          }, 5000);
+        }
+
+        function stopSlideshow() {
+          clearInterval(slideInterval);
+        }
+
+        prevBtn.addEventListener("click", () => {
+          stopSlideshow();
+          showSlide(currentSlide - 1);
+          startSlideshow();
+        });
+
+        nextBtn.addEventListener("click", () => {
+          stopSlideshow();
+          showSlide(currentSlide + 1);
+          startSlideshow();
+        });
+
+        // Start slideshow
+        startSlideshow();
+
+        // Contact Form Validation
+        const contactForm = document.getElementById("contactForm");
+        const nameInput = document.getElementById("name");
+        const emailInput = document.getElementById("email");
+        const messageInput = document.getElementById("message");
+        const nameError = document.getElementById("nameError");
+        const emailError = document.getElementById("emailError");
+        const messageError = document.getElementById("messageError");
+        const submitBtn = document.getElementById("submitBtn");
+        const submitSpinner = document.getElementById("submitSpinner");
+        const formSuccess = document.getElementById("formSuccess");
+
+        function validateEmail(email) {
+          const re =
+            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return re.test(String(email).toLowerCase());
+        }
+
+        function validateForm() {
+          let isValid = true;
+
+          // Name validation
+          if (nameInput.value.trim() === "") {
+            nameError.textContent = "Name is required";
+            isValid = false;
+          } else {
+            nameError.textContent = "";
+          }
+
+          // Email validation
+          if (emailInput.value.trim() === "") {
+            emailError.textContent = "Email is required";
+            isValid = false;
+          } else if (!validateEmail(emailInput.value.trim())) {
+            emailError.textContent = "Please enter a valid email address";
+            isValid = false;
+          } else {
+            emailError.textContent = "";
+          }
+
+          // Message validation
+          if (messageInput.value.trim() === "") {
+            messageError.textContent = "Message is required";
+            isValid = false;
+          } else {
+            messageError.textContent = "";
+          }
+
+          return isValid;
+        }
+
+        submitBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          if (!validateForm()) {
+            return;
+          }
+
+          // Show loading spinner
+          submitBtn.disabled = true;
+          submitSpinner.style.display = "inline-block";
+
+          // Simulate API call
+          setTimeout(() => {
+            submitBtn.disabled = false;
+            submitSpinner.style.display = "none";
+            contactForm.style.display = "none";
+            formSuccess.style.display = "block";
+
+            // Reset form
+            nameInput.value = "";
+            emailInput.value = "";
+            messageInput.value = "";
+          }, 1500);
+        });
+      });
+    </script>
+  </body>
+</html>
